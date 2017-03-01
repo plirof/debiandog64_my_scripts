@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Chromium Web Browser PEPPER-puppy (SDA1-save)
+Comment=Chromium Web Browser
+Exec=/usr/bin/chromium_puppy_pepper.sh
+Icon=chromium
+Terminal=false
+Type=Application
+Categories=Network;
+StartupNotify=false

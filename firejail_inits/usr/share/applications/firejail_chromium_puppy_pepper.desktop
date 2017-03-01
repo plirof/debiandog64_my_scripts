@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Chromium Firejail PEPPER-puppy (SDA1-save)
+Comment=Chromium Web Browser
+Exec=/usr/local/bin/firejail_chromium_puppy_pepper.sh
+Icon=chromium
+Terminal=false
+Type=Application
+Categories=Firejail;Network;
+StartupNotify=false

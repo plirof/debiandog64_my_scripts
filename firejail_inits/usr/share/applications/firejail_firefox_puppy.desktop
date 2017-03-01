@@ -1,0 +1,13 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Firefox firejail (as puppy)
+Exec=firejail_firefox_puppy.sh
+Comment=Web Browser Firefox (use/req. FIREJAIL sandbox) requires firejail
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=firefox-mozilla-build
+Categories=Firejail;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;
+StartupWMClass=Firefox
+StartupNotify=true

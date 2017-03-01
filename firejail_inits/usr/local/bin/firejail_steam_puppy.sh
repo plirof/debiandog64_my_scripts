@@ -1,0 +1,1 @@
+su - puppy -c "xhost + ; firejail steam"

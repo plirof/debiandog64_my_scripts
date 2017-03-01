@@ -1,0 +1,10 @@
+1.Sets download folders (and creates them)
+Browsers : palemoon,slimboat,firefox,qupzilla , iridium, opera,vivaldi,iron (2b adds Chromium)
+
+2.Set ROX pinboard as manager
+3.Adds /mnt/sda1/downloads_linux shortcut to desktop
+
+
+
+ver2 changes:
+added arora browser download dir (cache is inside root/.local/data/arora)
