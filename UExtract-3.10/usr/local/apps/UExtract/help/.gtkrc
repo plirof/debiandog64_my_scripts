@@ -1,0 +1,4 @@
+style 'fixed_font' {
+font_name="Monospace"
+}
+widget '*' style 'fixed_font'

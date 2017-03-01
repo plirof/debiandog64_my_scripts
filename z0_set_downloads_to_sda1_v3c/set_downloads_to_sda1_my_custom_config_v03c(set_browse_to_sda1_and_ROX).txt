@@ -1,0 +1,14 @@
+1a.Sets download folders (and creates them)
+Browsers : palemoon,slimboat,firefox,qupzilla , iridium, opera,vivaldi,iron (2b adds Chromium)
+1b. add scripts for browsers to run pepper flash 24.0.0.194 
+
+2.Set ROX pinboard as manager
+
+3.Adds /mnt/sda1/downloads_linux shortcut to desktop
+
+
+
+ver3 changes:
+- --ppapi-flash-version=24.0.0.194"
+ver2 changes:
+-added arora browser download dir (cache is inside root/.local/data/arora)

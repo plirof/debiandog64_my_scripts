@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SRWare Iron (sda1 user folder ,pepper)
+Comment=SRWare Iron-Browser
+CommentExec=su - puppy -c "/usr/share/iron/chrome-wrapper  --user-data-dir=/home/puppy/iron_puppy_user_data_dir"
+Exec=/usr/bin/iron_puppy.sh
+Icon=iron_product_logo
+Terminal=false
+Type=Application
+Categories=Network;
+StartupNotify=false

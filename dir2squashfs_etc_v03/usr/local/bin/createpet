@@ -1,0 +1,167 @@
+#!/bin/sh
+#
+# createpet - A script to convert DESTDIR directory to .pet file
+#
+# Short Description:
+#
+# I wrote this script to create .pet packages. To create pet packages, I 
+# recommended to use standard tools new2dir and dir2pet.
+#
+# This script is not as user friendly as new2dir and dir2pet. but It will do
+# the job once we create a directory tree with `make install DESTDIR=<directory>`.
+#
+# License:
+#
+# I'm still not very clear about licenses and related stuffs, this is my
+# first contribution, It will be helpful if someone suggest me a good Open
+# Source license which will allow anyone in this world to use my contributions.
+# As for this script, Use it whatever way you want. If anything you want to 
+# share with me, send a mail to mohan43u@gmail.com.
+#
+# Some points about what this script is doing:
+#
+# 1. It needs a directory(DESTDIR) which contains installed files for a package.
+# 2. It will create a .files file
+# 3. If -m option present, It will create .desktop file.
+# 4. It will place these two files inside the given directory.
+# 5. Using tar, gzip and md5sum, it will create .pet package from the directory.
+
+# Defining some variables to help reader and user
+
+USAGE="
+[USAGE]
+
+	createpet [-mh] DESTDIR
+	
+[DESCRIPTION]
+
+	-m		Create .desktop file for xdgmenu
+	-h		To print this information
+	DESTDIR_NAME	Name of the Directory which will be converted into .pet package
+	
+[NOTE]
+
+	While installing from source, use 'make install DESTDIR=<directory>' to
+	create DESTDIR directory.
+"
+
+# Parsing options
+
+while getopts "mh" OPTION
+do
+	case "${OPTION}" in
+	m)XDGMENU=Y;;
+	h)echo "${USAGE}"; exit 0;;
+	?)echo "${USAGE}"; exit 1;;
+	esac
+done
+
+# Checking for valid input and valid present working directory.
+# This script must me executed with the current working directory as the
+# package directory's parent directory.
+
+shift $((OPTIND - 1))
+test -z "${@}" && echo "${USAGE}" && exit 1
+PACKAGE_NAME=`basename "${1}"`
+test ! -d "${PACKAGE_NAME}" \
+&& echo "${PACKAGE_NAME} not found in current directory." \
+"Move to the directory where ${PACKAGE_NAME} present" \
+"and run this command." \
+"exitting.." && exit 1
+
+echo -n "Application Name[Default: ${PACKAGE_NAME%%-[0-9]\.*}] " \
+&& read APPLICATION_NAME \
+&& test -z "${APPLICATION_NAME}" && APPLICATION_NAME="${PACKAGE_NAME%%-[0-9]\.*}"
+
+echo -n "Comment[Default: ${PACKAGE_NAME} pet package] " \
+&& read COMMENT \
+&& test -z "${COMMENT}" && COMMENT="${PACKAGE_NAME} pet package"
+
+echo -n "Dependency packages[seperated by ','] " && read DEPENDENCIES
+
+echo -n "Registered(yes/no)[Default: yes] " && read REGISTER \
+&& test -z "${REGISTER}" && REGISTER="yes"
+
+if test ! -z "${XDGMENU}"
+then
+
+echo
+echo "[Creating /usr/share/applications/${APPLICATION_NAME}.desktop]"
+echo
+
+test ! -d "${PACKAGE_NAME}/usr/share/applications" \
+&& mkdir -p "${PACKAGE_NAME}/usr/share/applications"
+
+echo "Creating Menu Entry:" \
+&& find "${PACKAGE_NAME}" -name '*.xpm' | cut -d'/' -f2- | sed -e's/.*/\/&/g' \
+&& echo -n "Path to locate Icon file[Default: /usr/local/lib/X11/mini-icons/x16.xpm] " \
+&& read ICON_PATH \
+&& test -z "${ICON_PATH}" && ICON_PATH="/usr/local/lib/X11/mini-icons/x16.xpm"
+
+echo -n "Commandline to Execute[Default: rxvt -e ${APPLICATION_NAME} --help] " \
+&& read COMMANDLINE \
+&& test -z "${COMMANDLINE}" && COMMANDLINE="rxvt -e ${APPLICATION_NAME} --help"
+	
+echo -n "Menu Category:
+`grep Categories /usr/share/applications/* | cut -d':' -f2 | cut -d'=' -f2 | tr '\n' ','`
+[Default: Utility] " \
+&& read CATEGORY \
+&& test -z "${CATEGORY}" && CATEGORY="Utility"
+
+# Name and entries are taken from the .desktop files present in 
+# /usr/share/applications/
+
+XDG_DESKTOP_FILE_CONTENT="[Desktop Entry]
+Encoding=UTF-8
+Name=${APPLICATION_NAME}
+Icon=${ICON_PATH}
+Comment=${COMMENT}
+Exec=${COMMANDLINE}
+Terminal=false
+Type=Application
+Categories=${CATEGORY}
+GenericName=${APPLICATION_NAME}"
+
+echo "${XDG_DESKTOP_FILE_CONTENT}" \
+| tee "${PACKAGE_NAME}/usr/share/applications/${APPLICATION_NAME}.desktop"
+
+fi
+
+# echo
+# echo "[Creating ${PACKAGE_NAME}.files file]"
+#
+## .files file will be created automatically
+## by package manager, no need to create
+## while creating .pet packages
+#
+# find "${PACKAGE_NAME}" \
+# | sed -e"s%^${PACKAGE_NAME}%%g" \
+# | tee "${PACKAGE_NAME}.files"
+# mv -f "${PACKAGE_NAME}.files" "${PACKAGE_NAME}"
+
+echo
+echo "[Creating ${PACKAGE_NAME}.pet.specs file]"
+echo
+
+PET_SPECS="PUPAPPLICATION='${APPLICATION_NAME}'
+PETMENUDESCR='${COMMENT}'
+PETOFFICIALDEPS='${DEPENDENCIES}'
+PETREGISTER='${REGISTER}'"
+echo "${PET_SPECS}" | tee "${PACKAGE_NAME}/${PACKAGE_NAME}.pet.specs"
+
+echo
+echo "[Creating ${PACKAGE_NAME}.tar file]"
+echo
+
+tar cvf "${PACKAGE_NAME}.tar" "${PACKAGE_NAME}"
+
+echo
+echo "[Creating ${PACKAGE_NAME}.tar.gz file]"
+echo
+
+# This is how dir2pet doing, I slightly modified.
+
+echo "gzipping..." && gzip "${PACKAGE_NAME}.tar"
+echo "md5summing..." && md5sum "${PACKAGE_NAME}.tar.gz" | cut -d ' ' -f 1 >> "${PACKAGE_NAME}.tar.gz"
+echo "renaming..." && mv -f "${PACKAGE_NAME}.tar.gz" "${PACKAGE_NAME}.pet"
+echo "${PACKAGE_NAME}.pet Created..."

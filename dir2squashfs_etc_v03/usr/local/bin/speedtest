@@ -1,0 +1,14 @@
+#!/bin/sh
+export LANG=C
+STARTSECS=`date +%s`
+CNT=0;bCNT=0;bCNTold=0
+while [ $CNT -lt 10000 ];do
+ CNT=`expr $CNT + 1` 
+ bCNT=`expr $CNT \/ 1000`
+ [ $bCNT -gt $bCNTold ] && echo -n '.'
+ bCNTold=$bCNT
+done
+echo
+STOPSECS=`date +%s`
+DIFFSECS=`expr $STOPSECS - $STARTSECS`
+echo "$DIFFSECS seconds"

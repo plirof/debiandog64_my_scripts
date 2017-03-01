@@ -1,0 +1,18 @@
+
+
+
+
+http://shallowsky.com/blog/linux/ubuntu-system-clock.html
+
+Set Ubuntu's system clock to use localtime, not UTC
+
+
+
+
+Need your Ubuntu clock to stay in sync with a dual-boot Windows install? It seems to have changed over the years, and google wasn't finding any pages for me offering suggestions that still worked.
+
+Turns out, in Ubuntu Oneiric Ocelot, it's controlled by the file /etc/default/rcS: set UTC=no.
+
+Apparently it's also possible to get Windows to understand a UTC system clock using a registry tweak.
+
+Ironically, that page, which I found by searching for windows system clock utc, also has the answer for setting Ubuntu to local time. So if I'd searched for Windows in the first place, I wouldn't have had to puzzle out the Ubuntu solution myself. Go figure! 

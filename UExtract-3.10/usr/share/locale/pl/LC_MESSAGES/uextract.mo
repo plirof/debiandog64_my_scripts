@@ -1,0 +1,1 @@
+../../../../local/apps/UExtract/locale/pl/LC_MESSAGES/uextract.mo
