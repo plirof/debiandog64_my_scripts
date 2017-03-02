@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=vlc
+Comment=VideoLAN Client
+Icon=vlc
+Exec=su - puppy -c "firejail vlc"

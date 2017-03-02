@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=firefox
+Comment=Mozilla Firefox PuppyUser
+Icon=:resources/firefox.png
+Exec=su - puppy -c "firejail firefox"
