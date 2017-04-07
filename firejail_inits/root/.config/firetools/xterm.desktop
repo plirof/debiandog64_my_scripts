@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=xterm
+Comment=roxterm puppy
+Icon=:resources/gnome-terminal
+Exec=su - puppy -c "firejail roxterm"

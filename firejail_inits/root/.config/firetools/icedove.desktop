@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=icedove
+Comment=Debian Icedove
+Icon=:resources/icedove.png
+Exec=su - puppy -c "firejail icedove"

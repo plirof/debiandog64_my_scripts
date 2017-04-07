@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Skype puppy firejail
+Comment=Skype Internet Telephony
+Exec=su - puppy -c "firejail apulse skype --profile=/etc/firejail/skype.profile"
+Icon=skype.png

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=opera
+Comment=Opera Web Browser puppy
+Icon=opera
+Exec=su - puppy -c "firejail opera"
